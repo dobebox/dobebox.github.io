@@ -185,10 +185,10 @@ function restart(){
     player_x=10;
     player_y=362;
 
-    player_step=5;
+    player_step=1;
     overType=0;
     g=1;
-    player_go_can_change=true;
+    player_go_can_change=false;
     player_jump=false;
     player_data=player_right_data;
     player_img=player_right_img;
@@ -271,6 +271,7 @@ function init(){
             player_go_can_change=false;
             player_jump=true;
             jump++;
+            player_step+=1;
         }
     }, false);
     canvas.addEventListener('touchstart', function (e) {
@@ -278,6 +279,7 @@ function init(){
             player_go_can_change=false;
             player_jump=true;
             jump++;
+            player_step+=1;
             e.preventDefault();
         }
     }, false);
