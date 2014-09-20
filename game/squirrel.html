@@ -402,16 +402,10 @@
         
     }
     function player_to_left(){
-        player_x-=player_setp*5;
-        if(player_x<=0){
-            player_x=0;
-        }
+        
     }
     function player_to_right(){
-        player_x+=player_setp*5;
-        if(player_x+player_w>=canvas_w){
-            player_x=canvas_w-player_w;
-        }
+        
     }
     window.addEventListener('load',init,false);
 </script>
