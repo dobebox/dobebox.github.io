@@ -298,7 +298,7 @@ document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
             
             loopTime+=fps;
             c.clearRect(0, 0,canvas_w,canvas_h);
-            if(loopTime==500){
+            if(loopTime>250){
                 c.clearRect(0, 0,canvas_w,canvas_h);
                 
                 player_y+=player_setp;
