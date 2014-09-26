@@ -286,6 +286,9 @@ http://www.bjnews.com.cn
             for(i in cars){
                 if(trueX>cars[i][0]&&trueX<cars[i][0]+126){
                     if(trueY>cars[i][1]&&trueY<cars[i][1]+195){
+                        if(cars[i][4]==res_mario){
+                            gameOver();
+                        }
                         cars.splice(i,1);
                         getCarCount++;
 
@@ -376,7 +379,11 @@ http://www.bjnews.com.cn
             for(i in cars){
                 cars[i][1]+=speet;
                 if(cars[i][1]+195>=canvas_h){
-                    gameOver();
+                    if(cars[i][4]==res_mario){
+
+                    }else {
+                        gameOver();
+                    }
                 }
                 c.drawImage(cars[i][4],cars[i][0],cars[i][1],cars[i][2],cars[i][3]);
             }
@@ -386,13 +393,13 @@ http://www.bjnews.com.cn
 <body>
     <div class="wrap">
         <div id="welcome">
-            <div id="start"></div>
+            <div id="start">开始</div>
         </div>
         <canvas id="gameBox"></canvas>
         <div id="gameOver">
             <div id="msg"></div>
-            <div id="restart"></div>
-            <div id="aboutus"></div>
+            <div id="restart">重新开始</div>
+            <a id="aboutus" href="http://www.dobebox.com" target="_blank">关于</a>
         </div>
         <div id="about"></div>
     </div>
