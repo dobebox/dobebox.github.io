@@ -1,15 +1,12 @@
 <!--
-@author gongwb
+@author dobebox
 2014-09-26
-the beijing news
-http://www.bjnews.com.cn
-
 -->
 <!DOCTYPE html>
 <html>
 <head lang="zh">
     <meta charset="UTF-8">
-    <title>冲出高速</title>
+    <title>别点超级玛丽</title>
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
@@ -40,7 +37,7 @@ http://www.bjnews.com.cn
             }
         }
         #welcome{
-            background: url(res/start.png),url(res/welcome.jpg);
+            background:rgba(153,125,26,1);
             background-size: 100% 100%;
             position:absolute;
             top: 0px;
@@ -59,7 +56,7 @@ http://www.bjnews.com.cn
             bottom: 3%;
             left: 24%;
             right: 24%;
-            background:rgba(255,0,0,0);
+            background:rgba(255,0,0,1);
             cursor: pointer;
         }
         #gameBox{
@@ -75,7 +72,7 @@ http://www.bjnews.com.cn
             display: none;
         }
         #gameOver{
-            background: url(res/gameover.jpg);
+            background:rgba(153,125,26,1);
             background-size: 100% 100%;
             position:absolute;
             top: 0px;
@@ -107,7 +104,7 @@ http://www.bjnews.com.cn
             bottom: 22%;
             left: 24%;
             right: 24%;
-            background:rgba(255,0,0,0);
+            background:rgba(255,0,0,1);
             cursor: pointer;
         }
         #aboutus{
@@ -117,11 +114,11 @@ http://www.bjnews.com.cn
             bottom: 11%;
             left: 24%;
             right: 24%;
-            background:rgba(255,0,0,0);
+            background:rgba(255,0,0,1);
             cursor: pointer;
         }
         #about{
-            background: url(res/about.png);
+            background:rgba(153,125,26,1);
             background-size: 100% 100%;
             position:absolute;
             top: 0px;
@@ -138,7 +135,7 @@ http://www.bjnews.com.cn
         loop=false;
         fps=1000/16;
         checkResLoading=true;
-        resCount=5;
+        resCount=2;
         loadResCount=0;
         function looping(){
             if(loop){
@@ -155,23 +152,17 @@ http://www.bjnews.com.cn
             loadResCount++;
         }
         function loadRes(){
-            res_bg=new Image();
-            res_car_1=new Image();
-            res_car_2=new Image();
-            res_car_3=new Image();
-            res_car_4=new Image();
+            //res_bg=new Image();
+            res_mario=new Image();
+            res_jew=new Image();
 
-            res_bg.onload=loadOneFinish;
-            res_car_1.onload=loadOneFinish;
-            res_car_2.onload=loadOneFinish;
-            res_car_3.onload=loadOneFinish;
-            res_car_4.onload=loadOneFinish;
+            //res_bg.onload=loadOneFinish;
+            res_mario.onload=loadOneFinish;
+            res_jew.onload=loadOneFinish;
 
-            res_bg.src="res/bg.jpg";
-            res_car_1.src="res/car_1.png";
-            res_car_2.src="res/car_2.png";
-            res_car_3.src="res/car_3.png";
-            res_car_4.src="res/car_4.png";
+            //res_bg.src="res/bg.jpg";
+            res_mario.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANIAAADSCAMAAAAIR25wAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhQTFRF4tXjwFBNAAAAmTMAAAD//8wA/2YA////D56ixgAAAAh0Uk5T/////////wDeg71ZAAAB2UlEQVR42uzcwbLCIAwFULRq//+P31YWYSKFannn7lNzLM4UI5b9aF6HE176mUxdVZCQkJCQkJCQkJAWJZX3HCeVKCeSXidlQVLWh4SEhISEhISEhDSDtFX5BdItmbCHe5W4u8VJ6W0xEhISEhISEhLS/yVVE4U1SLeedJAa05i5pPdXSiqSpEaQkJCQkJCQkJCQRpFyw4aaVI0xenxzSblbViGO37JfIA1ehUhISEhISEhISEgzvuZvPIlvYU4kPT/PvSfx0ZM1SK1RGBISEhISEhISEtI6pHL4IHlP4tMmA0hxZpI6/n0ACQkJCQkJCQmp8TiazfdJdT976bpg+NunR5Vc342aHKkecAwgVanbG1sTDiuuSwo/PEhISEhISEhISCeS4qMLPTXhfuJMUu7tz9bEN2YqafAqTK41JCQkJCQkJCQkpFGk3JmGuiYcl/SSJu40jqZJyo6/ziLFYxokJCQkJCQkJCSkj0i3no1CMrkLDCHl3r3DvQ7fXCQzcUUhISEhISEhISEhfUaKdw3bVZ/EG2WPbwcJCQkJCQkJCQlpKVK9hViCtCUztr8yND9B2scGCQkJCQkJCQkJaSVSmZdvkfbLBAkJCQkJCQkJCelypCXyJ8AAaaJ3X4yN7rMAAAAASUVORK5CYII=";
+            res_jew.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANIAAADSCAMAAAAIR25wAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABVQTFRF/+vYOTkINjYE/////8yZMzMA////lfTEdQAAAAd0Uk5T////////ABpLA0YAAAHASURBVHja7NxBjsIwDAXQUkrvf+TZEqREluNUreZ5hypBXsvCfBlv51NqC9a5PYd0hAoJCQkJCQkJCamatE/X/UifyUJCQkJCQkJCQroDqe06p0ndHrbNVNeSPssq88iQkJCQkJCQkJCQykjfh+hf2ZCQkJCQkJCQkC4jzQesQdJ3BT90T5IyZ02QjuC7ISEhISEhISEhIeVJR+LgwUJCQkJCQkJCQionBdPWRA+bUrTzsEsz8atIP3k5EhISEhISEhLSNKlfibA0mqkOtg+s3PewzYbBmUFeJCQkJCQkJCSkEWl+l9U7VvOdapg0eyvftaTwlwMJCQkJCQkJCal51fwH6ipSDLsH++tf0rqfAyl5kDQa5UBCQkJCQkJC+o+k4DrUJ5Fq53+LfUhISEhISEhISCtJmV1UtaHsYGghSboqOo9dGUXnSEhISEhISEhI/bS1ufDqTpbej9TPxLdBA19Jqi0kJCQkJCQkJKTRbOurn2iWpq1rSeeNbz8SEhISEhISEtJTSfv8/oLbkQrWTCAhISEhISEhIQWnYNcFrOHNVtWkdc+vQIGEhISEhISEhBQl9cdZa+s60lPrT4ABAKDhZJuZLDL+AAAAAElFTkSuQmCC";
         }
         function welcome(){
             document.querySelector("#welcome").style.display="block";
@@ -193,7 +184,7 @@ http://www.bjnews.com.cn
             document.querySelector("#gameBox").style.display="none";
             document.querySelector("#gameOver").style.display="block";
             document.querySelector("#about").style.display="none";
-            shareTitle="我消灭了"+getCarCount+"量小汽车";
+            shareTitle="我得到了"+getCarCount+"个总统勋章";
             document.querySelector("#msg").innerHTML=shareTitle;
         }
         function aboutUs(){
@@ -292,6 +283,9 @@ http://www.bjnews.com.cn
             for(i in cars){
                 if(trueX>cars[i][0]&&trueX<cars[i][0]+126){
                     if(trueY>cars[i][1]&&trueY<cars[i][1]+195){
+                        if(cars[i][4]==res_mario){
+                            gameOver();
+                        }
                         cars.splice(i,1);
                         getCarCount++;
 
@@ -331,7 +325,7 @@ http://www.bjnews.com.cn
         }
         function gamelooping(){
             c.clearRect(0, 0,canvas_w,canvas_h);
-            c.drawImage(res_bg,0,0,canvas_w,canvas_h);
+            //c.drawImage(res_bg,0,0,canvas_w,canvas_h);
             /*
             time++;
             if(time==1){
@@ -351,16 +345,42 @@ http://www.bjnews.com.cn
                 }
             }
             if(top>20){
-                cars.push([10,-195,126,195,res_car_1]);
-                cars.push([180,-195,126,195,res_car_2]);
-                cars.push([340,-195,126,195,res_car_3]);
-                cars.push([500,-195,126,195,res_car_4]);
+                var r=Math.floor(Math.random() * 3)+1;
+                if(r==1){
+                    cars.push([10,-195,126,126,res_mario]);
+                    cars.push([180,-195,126,126,res_jew]);
+                    cars.push([340,-195,126,126,res_jew]);
+                    cars.push([500,-195,126,126,res_jew]);
+                }
+                if(r==2){
+                    cars.push([10,-195,126,126,res_jew]);
+                    cars.push([180,-195,126,126,res_mario]);
+                    cars.push([340,-195,126,126,res_jew]);
+                    cars.push([500,-195,126,126,res_jew]);
+                }
+                if(r==3){
+                    cars.push([10,-195,126,126,res_jew]);
+                    cars.push([180,-195,126,126,res_jew]);
+                    cars.push([340,-195,126,126,res_mario]);
+                    cars.push([500,-195,126,126,res_jew]);
+                }
+                if(r==4){
+                    cars.push([10,-195,126,126,res_jew]);
+                    cars.push([180,-195,126,126,res_jew]);
+                    cars.push([340,-195,126,126,res_jew]);
+                    cars.push([500,-195,126,126,res_mario]);
+                }
+
                 speet++;
             }
             for(i in cars){
                 cars[i][1]+=speet;
                 if(cars[i][1]+195>=canvas_h){
-                    gameOver();
+                    if(cars[i][4]==res_mario){
+
+                    }else {
+                        gameOver();
+                    }
                 }
                 c.drawImage(cars[i][4],cars[i][0],cars[i][1],cars[i][2],cars[i][3]);
             }
@@ -370,13 +390,13 @@ http://www.bjnews.com.cn
 <body>
     <div class="wrap">
         <div id="welcome">
-            <div id="start"></div>
+            <div id="start">开始</div>
         </div>
         <canvas id="gameBox"></canvas>
         <div id="gameOver">
             <div id="msg"></div>
-            <div id="restart"></div>
-            <div id="aboutus"></div>
+            <div id="restart">重新开始</div>
+            <a id="aboutus" href="http://www.dobebox.com" target="_blank">关于</a>
         </div>
         <div id="about"></div>
     </div>
