@@ -1,0 +1,384 @@
+<!--
+@author gongwb
+2014-09-26
+the beijing news
+http://www.bjnews.com.cn
+
+-->
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>冲出高速</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <style>
+        *{
+            margin:0px;
+            padding: 0px;
+        }
+        .wrap{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 100%;
+        }
+        @media screen and (min-width: 960px){
+            .wrap{
+                width:640px;
+                height: 960px;
+                position:relative;
+                margin: 0 auto;
+            }
+        }
+        #welcome{
+            background: url(res/start.png),url(res/welcome.jpg);
+            background-size: 100% 100%;
+            position:absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 900;
+            display: none;
+        }
+        #start{
+            position: absolute;
+            width:auto;
+            height: 10%;
+            bottom: 3%;
+            left: 24%;
+            right: 24%;
+            background:rgba(255,0,0,0);
+            cursor: pointer;
+        }
+        #gameBox{
+            background-size: 100% 100%;
+            position:absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 800;
+            display: none;
+        }
+        #gameOver{
+            background: url(res/gameover.jpg);
+            background-size: 100% 100%;
+            position:absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 700;
+            display: none;
+        }
+        #msg{
+
+            position: absolute;
+            width: auto;
+            height: 18%;
+            line-height: 18%;
+
+            left: 15%;
+            right:15%;
+            top: 9%;
+            text-align: center;
+            color: #f00;
+        }
+        #restart{
+            position: absolute;
+            width:auto;
+            height: 9%;
+            bottom: 22%;
+            left: 24%;
+            right: 24%;
+            background:rgba(255,0,0,0);
+            cursor: pointer;
+        }
+        #aboutus{
+            position: absolute;
+            width:auto;
+            height: 9%;
+            bottom: 11%;
+            left: 24%;
+            right: 24%;
+            background:rgba(255,0,0,0);
+            cursor: pointer;
+        }
+        #about{
+            background: url(res/about.png);
+            background-size: 100% 100%;
+            position:absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 600;
+            display: none;
+        }
+    </style>
+    <script>
+        loop=false;
+        fps=1000/16;
+        checkResLoading=true;
+        resCount=5;
+        loadResCount=0;
+        function looping(){
+            if(loop){
+                gamelooping();
+            }
+            if(checkResLoading){
+                if(loadResCount==resCount){
+                    welcome();
+                    checkResLoading=false;
+                }
+            }
+        }
+        function loadOneFinish(){
+            loadResCount++;
+        }
+        function loadRes(){
+            res_bg=new Image();
+            res_car_1=new Image();
+            res_car_2=new Image();
+            res_car_3=new Image();
+            res_car_4=new Image();
+
+            res_bg.onload=loadOneFinish;
+            res_car_1.onload=loadOneFinish;
+            res_car_2.onload=loadOneFinish;
+            res_car_3.onload=loadOneFinish;
+            res_car_4.onload=loadOneFinish;
+
+            res_bg.src="res/bg.jpg";
+            res_car_1.src="res/car_1.png";
+            res_car_2.src="res/car_2.png";
+            res_car_3.src="res/car_3.png";
+            res_car_4.src="res/car_4.png";
+        }
+        function welcome(){
+            document.querySelector("#welcome").style.display="block";
+            document.querySelector("#gameBox").style.display="none";
+            document.querySelector("#gameOver").style.display="none";
+            document.querySelector("#about").style.display="none";
+        }
+        function restart(){
+            document.querySelector("#welcome").style.display="none";
+            document.querySelector("#gameBox").style.display="block";
+            document.querySelector("#gameOver").style.display="none";
+            document.querySelector("#about").style.display="none";
+            reset();
+            loop=true;
+        }
+        function gameOver(){
+            loop=false;
+            document.querySelector("#welcome").style.display="none";
+            document.querySelector("#gameBox").style.display="none";
+            document.querySelector("#gameOver").style.display="block";
+            document.querySelector("#about").style.display="none";
+            shareTitle="我消灭了"+getCarCount+"量小汽车";
+            document.querySelector("#msg").innerHTML=shareTitle;
+        }
+        function aboutUs(){
+            document.querySelector("#welcome").style.display="none";
+            document.querySelector("#gameBox").style.display="none";
+            document.querySelector("#gameOver").style.display="none";
+            document.querySelector("#about").style.display="block";
+        }
+        function initDiv(){
+            document.querySelector("#start").addEventListener('touchstart',restart);
+            document.querySelector("#start").addEventListener('click',restart);
+            document.querySelector("#restart").addEventListener('touchstart',restart);
+            document.querySelector("#restart").addEventListener('click',restart);
+            document.querySelector("#aboutus").addEventListener('touchstart',aboutUs);
+            document.querySelector("#aboutus").addEventListener('click',aboutUs);
+        }
+        function initCanvas(){
+            canvas_w=640;
+            canvas_h=960;
+            canvas=document.getElementById("gameBox");
+            canvas.width=canvas_w;
+            canvas.height=canvas_h;
+            canvas.top = 0;
+            canvas.left = 0;
+            c = canvas.getContext('2d');
+            canvas.addEventListener('touchstart',touch);
+        }
+        function init(){
+            initDiv();
+            initCanvas();
+            loadRes();
+
+            //
+            document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+                var icon="res/icon.png";
+                var url=document.location.href;
+                var urlArr=url.split("/");
+                var imgUrl="";
+                for(i=0; i<urlArr.length-1;i++){
+                    imgUrl+=urlArr[i]+"/";
+                }
+                imgUrl+=icon;
+                shareLink=document.location.href;
+                shareTitle=document.title;
+                shareIcon=imgUrl;
+                //shareIcon="http://mmbiz.qpic.cn/mmbiz/ZBB7rRgWr0sQORlvCzyEqq72ibnm2ep0NbZs6hPLrh7arpjTia8aCwuRlz8brhuQUl7YEIxZeUTJlib2yicP6lXNbA/640";
+                // 发送给好友
+                WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+                    WeixinJSBridge.invoke('sendAppMessage', {
+                        "img_url":shareIcon,
+                        "img_width": "100",
+                        "img_height": "100",
+                        "link": shareLink,
+                        "desc": "",
+                        "title": shareTitle
+                    }, function (res) {
+                        _report('send_msg', res.err_msg);
+                    })
+                });
+                // 分享到朋友圈
+                WeixinJSBridge.on('menu:share:timeline', function (argv) {
+                    WeixinJSBridge.invoke('shareTimeline', {
+                        "img_url":shareIcon,
+                        "img_width": "100",
+                        "img_height": "100",
+                        "link": shareLink,
+                        "desc": "",
+                        "title": shareTitle
+                    }, function (res) {
+                        _report('timeline', res.err_msg);
+                    });
+                });
+            });
+            //
+            setInterval(looping,fps);
+        }
+        window.addEventListener('load',init);
+        function touch(e){
+            var x= e.clientX;
+            var y= e.clientY;
+            var touchobj = e.changedTouches[0]; // reference first touch point (ie: first finger)
+            startX = parseInt(touchobj.clientX);
+            startY = parseInt(touchobj.clientY);
+
+
+
+            var window_width=document.querySelector("#gameBox").scrollWidth;
+            var window_height=document.querySelector("#gameBox").scrollHeight;
+
+            var trueX=startX/(window_width/canvas_w);
+            var trueY=startY/(window_height/canvas_h);
+
+            trueX=parseInt(trueX);
+            trueY=parseInt(trueY);
+            //cars.push([trueX,trueY,126/3,195/3,res_car_4]);
+            for(i in cars){
+                if(trueX>cars[i][0]&&trueX<cars[i][0]+126){
+                    if(trueY>cars[i][1]&&trueY<cars[i][1]+195){
+                        cars.splice(i,1);
+                        getCarCount++;
+
+                    }
+                }
+            }
+            e.preventDefault();
+        }
+        function reset(){
+            gameTime=0;
+            time=0;
+            cars=new Array();
+            getCarCount=0;
+            speet=3;
+            /*
+            cars.push([10,10,126,195,res_car_1]);
+            cars.push([180,10,126,195,res_car_2]);
+            cars.push([340,10,126,195,res_car_3]);
+            cars.push([500,10,126,195,res_car_4]);
+
+
+            cars.push([10,220,126,195,res_car_1]);
+            cars.push([180,220,126,195,res_car_2]);
+            cars.push([340,220,126,195,res_car_3]);
+            cars.push([500,220,126,195,res_car_4]);
+
+            cars.push([10,440,126,195,res_car_1]);
+            cars.push([180,440,126,195,res_car_2]);
+            cars.push([340,440,126,195,res_car_3]);
+            cars.push([500,440,126,195,res_car_4]);
+
+            cars.push([10,660,126,195,res_car_1]);
+            cars.push([180,660,126,195,res_car_2]);
+            cars.push([340,660,126,195,res_car_3]);
+            cars.push([500,660,126,195,res_car_4]);
+            */
+        }
+        function gamelooping(){
+            c.clearRect(0, 0,canvas_w,canvas_h);
+            c.drawImage(res_bg,0,0,canvas_w,canvas_h);
+            /*
+            time++;
+            if(time==1){
+                cars.push([10,-195,126,195,res_car_1]);
+                cars.push([180,-195,126,195,res_car_2]);
+                cars.push([340,-195,126,195,res_car_3]);
+                cars.push([500,-195,126,195,res_car_4]);
+            }
+            if(time==100){
+                time=0;
+            }
+            */
+            var top=canvas_h;
+            for(i in cars){
+                if(cars[i][1]<top){
+                    top=cars[i][1];
+                }
+            }
+            if(top>20){
+                cars.push([10,-195,126,195,res_car_1]);
+                cars.push([180,-195,126,195,res_car_2]);
+                cars.push([340,-195,126,195,res_car_3]);
+                cars.push([500,-195,126,195,res_car_4]);
+                speet++;
+            }
+            for(i in cars){
+                cars[i][1]+=speet;
+                if(cars[i][1]+195>=canvas_h){
+                    gameOver();
+                }
+                c.drawImage(cars[i][4],cars[i][0],cars[i][1],cars[i][2],cars[i][3]);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="wrap">
+        <div id="welcome">
+            <div id="start"></div>
+        </div>
+        <canvas id="gameBox"></canvas>
+        <div id="gameOver">
+            <div id="msg"></div>
+            <div id="restart"></div>
+            <div id="aboutus"></div>
+        </div>
+        <div id="about"></div>
+    </div>
+</body>
+</html>
