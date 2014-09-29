@@ -419,15 +419,9 @@ function player(){
     }
     if(player_to=="left"){
         player_x-=car_speed*2;
-        if(player_x<=player_target_X){
-            //player_to="right";
-            player_x=player_target_X;
-            player_to="right";
-        }
         if(player_x<=120){
             //player_to="right";
             player_x=120;
-            player_to="right";
         }
     }
 
