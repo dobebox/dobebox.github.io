@@ -191,9 +191,16 @@ function init(){
     }, false);
 
     canvas.addEventListener('touchmove', function (e) {
-        var touchobj = e.changedTouches[0] // reference first touch point for this event
-        var distX = parseInt(touchobj.clientX) - startx;
-        e.preventDefault()
+        if (loop) {
+            var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
+            startx = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
+            player_to = "left";
+            player_target_X = player_x-car_speed*2;
+            if(player_target_X<120){
+                player_target_X=120;
+            }
+            e.preventDefault();
+        }
     }, false);
 
     canvas.addEventListener('touchend', function (e) {
