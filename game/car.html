@@ -129,7 +129,7 @@ function welcome(){
 }
 function gameover(){
     loop=false;
-    var msg="我在高速路上行驶了"+player_time+"秒钟，你也来试试啊！";
+    var msg="我在高速路上行驶了"+parseInt(time2*car_speed/fps)+"m，你也来试试啊！";
 
     shareTitle=msg;
 
@@ -288,6 +288,8 @@ function restart(){
         player_to = "right";
         makeCarTime = 0;
         backgroundY = 0;
+        m=0;
+        time2=0;
         //
         //document.getElementById("myCanvas").style.display="block";
         document.getElementById("welcome").style.display = "none";
@@ -387,7 +389,7 @@ function looping(){
 
         c.drawImage(player_img, player_x, player_y, player_w, player_h);
         time+=fps;
-
+        time2++;
         if(time==1000){
             time=0;
             player_time++;
@@ -395,7 +397,7 @@ function looping(){
         }
         c.font="50px Georgia";
         c.fillStyle="#f00";
-        c.fillText(player_time,canvas_w/2-15,60);
+        c.fillText(parseInt(time2*car_speed/fps)+"m",canvas_w/2-15,60);
 
         //
 
