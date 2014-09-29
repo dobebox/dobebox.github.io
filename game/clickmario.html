@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+<meta charset="UTF-8">
+<title>点击超级玛丽别点林肯啊</title>
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<style>
+    *{
+        margin:0px;
+        padding: 0px;
+    }
+    #myCanvas{
+        width:100%;
+        height:100%;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        z-index: 0;
+    }
+    #welcome,#gameover,#loading{
+        width:100%;
+        height:100%;
+        position: fixed;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        display: none;
+        z-index: 999;
+    }
+
+    #welcome{
+        background: rgba(255,255,255,.3);
+    }
+    #gameover{
+        background: rgba(255,255,255,.3);
+    }
+    p{
+        width: 90%;
+        left: 5%;
+        position: fixed;
+        top: 45%;
+        color: #fff;
+    }
+    #start{
+        width: 36%;
+        height: 60px;
+        line-height:60px;
+        text-align: center;
+        left: 33%;
+        position: fixed;
+
+        border: none;
+        outline: none;
+        bottom: 8%;
+        zoom: 0;
+        background: rgba(255,0,0,.9);
+        color:#fff;
+
+    }
+    #msg{
+        position: fixed;
+        top: 31%;
+        width: 100%;
+        left: 0px;
+        right: 0px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #000;
+    }
+    #restart{
+        width: 40%;
+        height: 40px;
+        line-height:40px;
+        text-align: center;
+        left:0px;
+        position: fixed;
+        background: rgba(255,0,0,1);
+        color:#fff;
+        color: #fff;
+        font-size: 18px;
+        border: none;
+        outline: none;
+        bottom: 8%;
+        zoom: 0;
+    }
+    #link{
+        width: 40%;
+        height: 40px;
+        line-height:40px;
+        text-align: center;
+        right: 0px;
+        position: fixed;
+        background: rgba(255,0,0,1);
+        color:#fff;
+        font-size: 18px;
+        border: none;
+        outline: none;
+        bottom: 8%;
+        zoom: 0;
+    }
+    #copy{
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        color: #f00;
+        z-index: 999;
+        background: rgba(255,255,255,0.5);
+    }
+</style>
+<script>
+function welcome(){
+    document.getElementById("welcome").style.display="block";
+    document.getElementById("gameover").style.display="none";
+    document.getElementById("loading").style.display="none";
+    //document.getElementById("myCanvas").style.display="none";
+}
+function gameover(){
+    loop=false;
+    var msg="我消灭了"+getMario+"个超级玛丽，你也来试试啊！";
+
+    shareTitle=msg;
+
+    document.getElementById("msg").innerHTML=msg;
+    document.getElementById("gameover").style.display="block";
+    document.getElementById("welcome").style.display="none";
+    document.getElementById("loading").style.display="none";
+    buttonLustTapTime=Date.parse(new Date());
+}
+function link(){
+    if(Date.parse(new Date())-buttonLustTapTime>800) {
+        window.location.href = "http://www.dobebox.com";
+    }
+}
+function init(){
+    player_w=90;
+    player_h=150;
+    //canvas
+    canvas_w=630;
+    canvas_h=960;
+    canvas=document.getElementById("myCanvas");
+    canvas.width=canvas_w;
+    canvas.height=canvas_h;
+    canvas.top = 0;
+    canvas.left = 0;
+    c = canvas.getContext('2d');
+    res_count=0;
+    resloaded=false;
+    fps=1000/16;
+    loop=false;
+    loadingRES();
+    backTime=0;
+    setInterval(looping,fps);
+    buttonLustTapTime=0;
+    initbuttons();
+
+    canvas.addEventListener('touchstart', function (e) {
+        var x= e.clientX;
+        var y= e.clientY;
+        var touchobj = e.changedTouches[0]; // reference first touch point (ie: first finger)
+        startX = parseInt(touchobj.clientX);
+        startY = parseInt(touchobj.clientY);
+        var window_width=document.querySelector("#myCanvas").scrollWidth;
+        var window_height=document.querySelector("#myCanvas").scrollHeight;
+        var trueX=startX/(window_width/canvas_w);
+        var trueY=startY/(window_height/canvas_h);
+        trueX=parseInt(trueX);
+        trueY=parseInt(trueY);
+        //cars.push([trueX,trueY,126/3,195/3,res_car_4]);
+        tap(trueX,trueY);
+        e.preventDefault();
+    }, false);
+
+    canvas.addEventListener('click', function (e) {
+        if (loop) {
+            var x= e.clientX;
+            var y= e.clientY;
+            startX = x;
+            startY = y;
+
+
+
+            var window_width=document.querySelector("#myCanvas").scrollWidth;
+            var window_height=document.querySelector("#myCanvas").scrollHeight;
+
+            var trueX=startX/(window_width/canvas_w);
+            var trueY=startY/(window_height/canvas_h);
+
+            if(document.body.clientWidth>640){
+                trueX=startX-(document.body.clientWidth-640)/2;
+                //trueY=startY;
+            }
+            if(document.body.scrollTop>960){
+                trueY=startY-document.body.scrollTop;
+            }
+
+            trueX=parseInt(trueX);
+            trueY=parseInt(trueY);
+            //cars.push([trueX,trueY,126/3,195/3,res_car_4]);
+            tap(trueX,trueY)
+            e.preventDefault();
+        }
+    }, false);
+
+    canvas.addEventListener('touchmove', function (e) {
+    }, false);
+
+    canvas.addEventListener('touchend', function (e) {
+    }, false);
+
+    //
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        var icon="res/icon.png";
+        var url=document.location.href;
+        var urlArr=url.split("/");
+        var imgUrl="";
+        for(i=0; i<urlArr.length-1;i++){
+            imgUrl+=urlArr[i]+"/";
+        }
+        imgUrl+=icon;
+        shareLink=document.location.href;
+        shareTitle=document.title;
+        shareIcon="http://mmbiz.qpic.cn/mmbiz/ZBB7rRgWr0sQORlvCzyEqq72ibnm2ep0NbZs6hPLrh7arpjTia8aCwuRlz8brhuQUl7YEIxZeUTJlib2yicP6lXNbA/640";
+        // 发送给好友
+        WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+            WeixinJSBridge.invoke('sendAppMessage', {
+                "img_url":shareIcon,
+                "img_width": "100",
+                "img_height": "100",
+                "link": shareLink,
+                "desc": "",
+                "title": shareTitle
+            }, function (res) {
+                _report('send_msg', res.err_msg);
+            })
+        });
+        // 分享到朋友圈
+        WeixinJSBridge.on('menu:share:timeline', function (argv) {
+            WeixinJSBridge.invoke('shareTimeline', {
+                "img_url":shareIcon,
+                "img_width": "100",
+                "img_height": "100",
+                "link": shareLink,
+                "desc": "",
+                "title": shareTitle
+            }, function (res) {
+                _report('timeline', res.err_msg);
+            });
+        });
+    });
+}
+function loadedOne(){
+    res_count++;
+}
+function loadingRES(){
+    document.getElementById("loading").style.display="block";
+    document.getElementById("welcome").style.display="none";
+    //document.getElementById("myCanvas").style.display="none";
+    document.getElementById("gameover").style.display="none";
+
+    mario_img=new Image();
+    jew_img=new Image();
+    bg_img=new Image();
+    obj_img=new Image();
+
+
+
+
+    mario_img.onload=loadedOne;
+    jew_img.onload=loadedOne;
+    bg_img.onload=loadedOne;
+    obj_img.onload=loadedOne;
+
+    mario_img.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABQCAMAAABWDWmhAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhQTFRF/PfzvVNKAAAAmTMA/8wA/2YAAAD/////WhnYYAAAAAh0Uk5T/////////wDeg71ZAAABK0lEQVR42uzY7Q7CIAwF0OKYff83NqDho7TQMWLc7P2J4QirYDPA1QETTUTYpaQ54OuYSLUQWUxRizLGxcQviq5OmuIeIdHgfg4T4h7FCHJ7MZFgcXaNEdGnQ6gXfV8sBk0ci4QNh25j2Hmxv9A7i25GZJxieST532ypKHcp02u8tIhiw8B9wRYyElFqaliy7YUuIoKU42IzkekX3DPEMWOk+YtgLJRK7I/l/QbQLRDhJ8R4hMSxXBSN+G4DyKLyGCmKSuxvvS7KChGWi+fWSPq1/BxTUT4iag8OSbg+iw9KkdwKWtHfT+Sq0DxH1xPpJakoBUkjkutbsc3biIPnKNVIFvNJ2p6HYyJWfxOrxAJTiNDPjKh4t/f3IoyDB8U1b12vINr78LN5CTAAun6AOYHqUtIAAAAASUVORK5CYII=";
+    jew_img.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABQCAMAAABWDWmhAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhQTFRF9PLu+Nm4WFMlKiwA/////8yZMzMA////ZNzS1AAAAAh0Uk5T/////////wDeg71ZAAACC0lEQVR42uyY4XbDIAiF0Vh9/zfe1BqBQLDq1tOd3V/JSfM1ckFRSKsCR5RgmegeRNuJ7g3EoGiWGLwmmCVGTX+VmOMPOvG0Z5gYfPQ+6vp2p35osd6NEKMtYejvJx5Z/WoDsSR3v1omHr685I92FXYT3buJiVmxRuzl0q1QiSMZHvwFITtTFhbf/rgqwF0ILWJ/epyCpW8kT1sdjRGrPeiWEJF5o8SnPfgWEbF5g0RprEx96P9ENR9tojOICbJ6FfavYDYzr11+bWSmiLQ04mXALR8ry57N5MIRQ/gqkRTOEjFKhTNBrPYUOfo269KQKQZR6hDZzHUwU2aJ973Ay0Qyc1lEUBScNnMZRK3ROTyCZ7GhI1M40WtE1tTzZYDnyA8SU5TDLhC1xMHE8ks57FciTW6g1j6JdZNIJzrW46E1no7/JAKeH+9zmNaISgzjRDUIg0SlKsaJtLXSq2Kc2DyR1yG1Gb8j3q6V2oZhL7EP/Se+EW9q5okojmVTcy4eMrHMWf25PmBqD+72OLFlBlghJPZsIcbfIwLL8HwLS8Re17UjywnxuD1QYBtYvoZhYuMYRLbJ3kA0zgVEolsnnmeIjxr8djVPLPK38Zkixh0CuwP4YKJyLjlPBPXwdJqo9++fSLQ6gMuRmUV0ZcqzTUnDRLCrx9heSMSwnxj3ENMZcf2k3jCl6EuAAQDJhIj0tFMQBwAAAABJRU5ErkJggg==";
+    bg_img.src="data:image/png;base64,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";
+    obj_img.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnYAAAOiCAMAAADKUmpGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxQTFRFAIAAMzMAmcwA////SMTOwwAAAAR0Uk5T////AEAqqfQAAAkzSURBVHja7N3Bbqs6FIZRk77/O3eGjNlgt2CjmPVNjnRPzh00a7D/BKnpRxpe8iMQdsJOwk7YSdgJOwk7YSdhJ+yEnYSdsJOwE3YSdsJOwk7YCTsJO2EnYSfsJOyEnYSdsBN2EnbCTsJO2EnYCTsJO2En7CTshJ2EnbCTsBN2EnbCTthJ2Ak7CTthJ2En7CTshJ2wk7ATdhJ2wk7CTthJ2Ak7YSdhJ+wk7ISdhJ2wk7ATdsJOwk7YSdgJOwk7YSdhJ+yEnYSdsJOwE3YSdsJOwk7YSdgJO2EnYSfsJOyEnYSdsJOwE3bCTsJO2EnYCTsJO2EnYSfshJ2EnbCTsBN2EnbCTsJO2Ak7CTthJ2En7CTshJ2EnbATdhJ2wk7CTthJ2Ak7CTthJ+wk7ISdhJ2wk7ATdhJ2wk7YSdgJOwk7YSdhJ+wk7ISdsJOwE3YSdsJOwk7YSdgJO2EnYSfsJOyEnYSdsJOwE3YSdsJO2EnYCTsJO2EnYSfsJOyEnbCTsBN2EnbCTsJO2EnYCTthJ2En7CTshJ2EnbCTsBN2wk7CTthJ2Ak7CTthJ2En7ISdhJ2wk7ATdhJ2wk7CTtgJOwk7YSdhJ+wk7ISdhJ2wE3YSdsJOwk7YSdgJOwk7YSfsJOyEnYSdsJOwE3YSdsJO2EnYCTsJO2EnYSfsJOyEnbDzIxB2wk7CTthJ2Ak7CTthJ2En7ISdhJ2wk7ATdhJ2wk7CTtgJOwk7YSdhJ+wk7ISdhJ2wE3YSdsJOwk7YSdgJOwk7YSfsJOyEnYSdsJOwE3YSdsJO2EnYCTsJO2EnYSfsJOyEnbCTsBN2I1tGRwF22GGHnbDDDjvsNB27z5iwww477LDT69ilqIBNuhp22GGHHXbCDjvssNPsS7bKroVg9tr831iy2GGHHXbC7iq7gzsRO+x6sytejx122GGHnbBz22FnyQo77LDDTti57bCzZIUddthhh53bTthZsthhJ+yww85tJ+wsWeywE3bYYee2w86SFXbYYYedsHPbYWfJCjvssMNObju3HXaWLHbYCTvssHPbCTtLFjvshB122LntZMlasthhhx12wi5r8/vBor8rX3fwu8XKP9cowG7PrnsUYIcddtgJO+yw+35+3n3ssMMOO2F3/vld9bO76LM67LA7YdfwbUX1mwpPnmCHnbATdp3Yec4Ou4fYefIEO+yww07Yue2ws2SFHXbYYSfs3HbYWbLCDjvssJPbTthZsthhJ+yww85tJ+wsWeywE3bYYee2kyUr7LDDDjth57bDzpIVdthhh52wc9thZ8kKO+ywww47t52ws2Sxw07YYYed207YWbLYYSfssMPObYedJSvssMMOO2HntsPOkhV22GGHndx22GFnyWKHnbDDDju3nbCzZLHDTthhh51JIeywww477HyAIuxMCuywE3bYYee2E3aWLHbYCTvssHPbYWfJCjvssMNO2LntsLNkhR122GEntx122Fmy2GEn7LDDzm0n7CxZ7LATdthh57aTJWvJYocddtgJO7cddpassMMOO+yEndsOO0tW2GGHHXZy2wk7SxY77IQddti57YSdJYsddsIOO+zcdrJkhR122GEn7Nx22Fmywg477LATdm477CxZYefdxw477Nx2ws6SxQ47YYcddvezy1oZRf+9fE1e8Zo17z52dXa3593HDjvssNPb2C2jowA77LDDTthhh90wdkef1zV9Zhd8drf7f1GAXfu3E396DCB7rUcCsMMOO+yE3Z3sPHeH3UPsPImCHXbYYSfs3HbYWbLCDjvssBN2bjvsLFlhhx122GHnthN2lix22Ak77LBz2wk7SxY77IQddti57WTJYocddthhJ+zcdthZssIOO+ywE3ZuO+wsWWGHHXbYYee2E3aWLHbYCTvssHPbCTtLFjvshB122G3Znd1jn4jkf8MOO+yww07YYYcddpp9yfbMksUOO+yw0/vYjYwC7LDDDjthhx122GkmdsJOwk7YSdgJOwk7YSfs/AiEnbCTsBN2EnbCTsJO2EnYCTthJ2En7CTshJ2EnbCTsBN2wk7CTthJ2Ak7CTthJ2En7ISdhJ2wk7ATdhJ2wk7CTtgJOwk7YSdhJ+wk7ISdhJ2wE3YSdsJOwk7YSdgJOwk7YSfsJOyEnYSdsJOwE3YSdsJO2EnYCTsJO2EnYSfsJOyEnbCTsBN2EnbCTsJO2EnYCTthJ2En7CTshJ2EnbCTsBN2EnbCTthJ2Ak7CTthJ2En7CTshJ2wk7ATdhJ2wk7CTthJ2Ak7YSdhJ+wk7ISdhJ2wk7ATdsJOwk7YSdgJOwk7YSdhJ+yEnYSdsJOwE3YSdsJOwk7YCTsJO2EnYSfsJOyEnYSdsBN2EnbCTsJO2EnYCTsJO2En7CTshJ2EnbCTsBN2EnbCTthJ2Ak7CTthJ2En7CTshJ2EnbATdtJ72C2jowA77LDDTthhhx12mo7dZ0zYYYcddtjpdexSVMAmXQ077LDDDjthhx122Gn2JVtl10Iwe23+byxZ7LDDDjthd5XdwZ2IHXa92RWvxw477LDDTti57bCzZIUddthhJ+zcdthZssIOO+yww85tJ+wsWeywE3bYYee2E3aWLHbYCTvssHPbYWfJCjvssMNO2LntsLNkhR122GEnt53bDjtLFjvshB122LnthJ0lix12wg477Nx2smQtWeywww47YZe1+f1g0d+Vrzv43WLln2sUYLdn1z0KsMMOO+yEHXbYfT8/7z522GGHnbA7//yu+tld9FkddtidsGv4tqL6TYUnT7DDTtgJu07sPGeH3UPsPHmCHXbYYSfs3HbYWbLCDjvssBN2bjvsLFlhhx122MltJ+wsWeywE3bYYee2E3aWLHbYCTvssHPbyZIVdthhh52wc9thZ8kKO+yww07Yue2ws2SFHXbYYYed207YWbLYYSfssMPObSfsLFnssBN22GHntsPOkhV22GGHnbBz22FnyQo77LDDTm477LCzZLHDTthhh53bTthZsthhJ+yww85tJ0sWO+ywww47YSfsJOyEnYSdsJOwE3bCTsJO2EnYCTsJO2EnYSfshJ2EnbCTsBN2EnbCTsJO2Ak7CTthJ2En7CTshJ2EnbCTsBN2wk7CTthJ2Ak7CTthJ2En7ISd1K9fAQYAyH6ZLXfJzJkAAAAASUVORK5CYII=";
+    /*
+    player_img.onload=function(){
+        res_count++;
+        c.clearRect(0, 0,canvas_w,canvas_h);
+        c.drawImage(this,0,0,player_w,player_h);
+        player_data = c.getImageData(0,0,player_w,player_h).data;
+        c.clearRect(0, 0,canvas_w,canvas_h);
+    }
+    */
+
+}
+function restart(){
+    if(Date.parse(new Date())-buttonLustTapTime>800) {
+        tangetX = 0;
+        tangetT = 0;
+        player_x = canvas_w-player_w-120;
+        player_y = canvas_h - player_h - 60;
+        win = false;
+        player_target_X=0;
+        player_setp = 30;
+        speed=10;
+        player_time = 0;
+        fps = 1000 / 32;
+        loopTime = 0;
+        player_to = "right";
+        makeManTime = 0;
+        getMario=0;
+        //
+        //document.getElementById("myCanvas").style.display="block";
+        document.getElementById("welcome").style.display = "none";
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("gameover").style.display = "none";
+        //
+        time = 0;
+        mans = new Array();
+        mans.push([160,canvas_h-160,mario_img]);
+        loop = true;
+    }
+}
+
+function looping(){
+
+    if(loop){
+        //
+        loopTime+=fps;
+        c.clearRect(0, 0,canvas_w,canvas_h);
+        c.drawImage(bg_img,0,0,canvas_w,canvas_h);
+
+
+        //c.clearRect(0, 0,canvas_w,canvas_h);
+        //c.drawImage(bg_img,0,0,canvas_w,canvas_h);
+        makeManTime+=fps;
+
+        var top=0;
+        for(i in mans){
+            if(mans[i][1]>top){
+                top=mans[i][1];
+            }
+        }
+        if(top<canvas_h-160-160-160){
+
+            var tmp_r=Math.floor(Math.random() * 2);
+            if(tmp_r==0){
+                mans.push([160,canvas_h-160,mario_img]);
+            }else{
+                mans.push([160,canvas_h-160,jew_img]);
+            }
+            speed+=0.1;
+        }
+
+
+
+
+        for(i in mans){
+            mans[i][1]-=speed;
+            if(mans[i][1]<=-85){
+                if(mans[i][2]==mario_img){
+                    gameover();
+                }
+                mans.splice(i,1);
+            }
+            c.drawImage(mans[i][2],mans[i][0],mans[i][1]);
+        }
+
+        c.drawImage(obj_img,0,0,canvas_w,canvas_h);
+
+        time+=fps;
+        if(time==1000){
+            time=0;
+            player_time++;
+        }
+        c.font="50px Georgia";
+        c.fillStyle="#f00";
+        c.fillText(getMario,canvas_w/2-15,60);
+
+        //
+
+        //
+    }
+    //checking res loaded?
+    if(resloaded==false){
+        if(res_count==4){
+            welcome();
+            resloaded=true;
+        }
+    }
+}
+function tap(trueX,trueY){
+    for(i in mans){
+        if(trueX>mans[i][0]&&trueX<mans[i][0]+81){
+            if(trueY>mans[i][1]&&trueY<mans[i][1]+81){
+                if(mans[i][1]<=750){
+                    if(mans[i][2]==mario_img){
+                        mans.splice(i,1);
+                        getMario++;
+                    }else if(mans[i][2]==jew_img){
+                        gameover();
+                    }
+                }
+            }
+        }
+    }
+
+}
+window.addEventListener('load',init,false);
+function initbuttons(){
+    document.querySelector("#start").addEventListener('touchstart',restart);
+    document.querySelector("#start").addEventListener('click',restart);
+    document.querySelector("#restart").addEventListener('touchstart',restart);
+    document.querySelector("#restart").addEventListener('click',restart);
+    document.querySelector("#link").addEventListener('touchstart',link);
+    document.querySelector("#link").addEventListener('click',link);
+}
+</script>
+</head>
+<body>
+<div id="loading">loading</div>
+<div id="welcome">
+    <div id="start" ontouchstart="restart();">猛戳此处开始</div>
+</div>
+<div id="gameover">
+    <p id="msg"></p>
+    <div id="restart" ontouchstart="restart();">再玩一局！</div>
+    <div id="link" ontouchstart="link();">更多游戏</div>
+</div>
+<canvas id="myCanvas"></canvas>
+<div id="copy">逗比盒子</div>
+<span id="tongji" style="display: none;"><script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc961dabb84f92a11e4c69829d2968259' type='text/javascript'%3E%3C/script%3E"));
+</script><script src=" http://hm.baidu.com/h.js?c961dabb84f92a11e4c69829d2968259" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=c961dabb84f92a11e4c69829d2968259" target="_blank"><img border="0" src="http://eiv.baidu.com/hmt/icon/21.gif" width="20" height="20"></a></span>
+</body>
+</html>
