@@ -36,7 +36,7 @@
         display: none;
         z-index: 999;
     }
-    
+
     #welcome{
         background: rgba(255,255,255,.3);
     }
@@ -57,7 +57,7 @@
         text-align: center;
         left: 33%;
         position: fixed;
-        
+
         border: none;
         outline: none;
         bottom: 8%;
@@ -121,67 +121,76 @@
     }
 </style>
 <script>
-    function welcome(){
-        document.getElementById("welcome").style.display="block";
-        document.getElementById("gameover").style.display="none";
-        document.getElementById("loading").style.display="none";
-        //document.getElementById("myCanvas").style.display="none";
+function welcome(){
+    document.getElementById("welcome").style.display="block";
+    document.getElementById("gameover").style.display="none";
+    document.getElementById("loading").style.display="none";
+    //document.getElementById("myCanvas").style.display="none";
+}
+function gameover(){
+    loop=false;
+    var msg="我在高速路上行驶了"+player_time+"秒钟，你也来试试啊！";
+
+    shareTitle=msg;
+
+    document.getElementById("msg").innerHTML=msg;
+    document.getElementById("gameover").style.display="block";
+    document.getElementById("welcome").style.display="none";
+    document.getElementById("loading").style.display="none";
+    buttonLustTapTime=Date.parse(new Date());
+}
+function link(){
+    if(Date.parse(new Date())-buttonLustTapTime>800) {
+        window.location.href = "http://www.dobebox.com";
     }
-    function gameover(){
-        loop=false;
-        var msg="我在高速路上行驶了"+player_time+"秒钟，你也来试试啊！";
-        
-        shareTitle=msg;
-        
-        document.getElementById("msg").innerHTML=msg;
-        document.getElementById("gameover").style.display="block";
-        document.getElementById("welcome").style.display="none";
-        document.getElementById("loading").style.display="none";
-    }
-    function link(){
-        window.location.href="http://www.dobebox.com";
-    }
-    function init(){
-        player_w=204;
-        player_h=312;
-        //canvas
-        canvas_w=630;
-        canvas_h=960;
-        canvas=document.getElementById("myCanvas");
-        canvas.width=canvas_w;
-        canvas.height=canvas_h;
-        canvas.top = 0;
-        canvas.left = 0;
-        c = canvas.getContext('2d');
-        res_count=0;
-        resloaded=false;
-        fps=1000/16;
-        loop=false;
-        loadingRES();
-        backTime=0;
-        setInterval(looping,fps);
+}
+function init(){
+    player_w=102;
+    player_h=156;
+    //canvas
+    canvas_w=630;
+    canvas_h=960;
+    canvas=document.getElementById("myCanvas");
+    canvas.width=canvas_w;
+    canvas.height=canvas_h;
+    canvas.top = 0;
+    canvas.left = 0;
+    c = canvas.getContext('2d');
+    res_count=0;
+    resloaded=false;
+    fps=1000/16;
+    loop=false;
+    loadingRES();
+    backTime=0;
+    setInterval(looping,fps);
+    buttonLustTapTime=0;
+    initbuttons();
 
+    canvas.addEventListener('touchstart', function (e) {
+        var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
+        startx = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
+        player_to="left";
+        e.preventDefault();
+    }, false);
 
-        canvas.addEventListener('touchstart', function (e) {
-            var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
-            startx = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
-            player_to="left";
-            e.preventDefault();
-        }, false);
+    canvas.addEventListener('click', function (e) {
+        player_to="left";
+        e.preventDefault();
+    }, false);
 
-        canvas.addEventListener('touchmove', function (e) {
-            var touchobj = e.changedTouches[0] // reference first touch point for this event
-            var distX = parseInt(touchobj.clientX) - startx;
-            e.preventDefault()
-        }, false);
+    canvas.addEventListener('touchmove', function (e) {
+        var touchobj = e.changedTouches[0] // reference first touch point for this event
+        var distX = parseInt(touchobj.clientX) - startx;
+        e.preventDefault()
+    }, false);
 
-        canvas.addEventListener('touchend', function (e) {
-            var touchobj = e.changedTouches[0] // reference first touch point for this event
-            //statusdiv.innerHTML = 'Status: touchend<br /> Resting x coordinate: ' + touchobj.clientX + 'px'
-            e.preventDefault()
-        }, false);
-        //
-document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    canvas.addEventListener('touchend', function (e) {
+        var touchobj = e.changedTouches[0] // reference first touch point for this event
+        //statusdiv.innerHTML = 'Status: touchend<br /> Resting x coordinate: ' + touchobj.clientX + 'px'
+        e.preventDefault()
+    }, false);
+    //
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
         var icon="res/icon.png";
         var url=document.location.href;
         var urlArr=url.split("/");
@@ -220,183 +229,190 @@ document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
             });
         });
     });
-    }
-    function loadedOne(){
+}
+function loadedOne(){
+    res_count++;
+}
+function loadingRES(){
+    document.getElementById("loading").style.display="block";
+    document.getElementById("welcome").style.display="none";
+    //document.getElementById("myCanvas").style.display="none";
+    document.getElementById("gameover").style.display="none";
+
+    car_img=new Image();
+    player_img=new Image();
+
+
+
+
+    car_img.onload=loadedOne;
+
+    player_img.onload=function(){
         res_count++;
+        c.clearRect(0, 0,canvas_w,canvas_h);
+        c.drawImage(this,0,0,player_w,player_h);
+        player_data = c.getImageData(0,0,player_w,player_h).data;
+        c.clearRect(0, 0,canvas_w,canvas_h);
     }
-    function loadingRES(){
-        document.getElementById("loading").style.display="block";
-        document.getElementById("welcome").style.display="none";
-        //document.getElementById("myCanvas").style.display="none";
-        document.getElementById("gameover").style.display="none";
 
-        car_img=new Image();
-        player_img=new Image();
+    player_img.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAAE4CAMAAAAgiOx7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhQTFRF1GtrcyEhrycn23FxbBwc/wAAzDMz////NSfHDgAAAAh0Uk5T/////////wDeg71ZAAACbUlEQVR42uzdy27DIBAFUAiu8/9/3FWbcRUk3EQyQ85ddZOKU6g8wTzK/ZH2lTAtAAoMDAwMDAzMJ2JaSEpMSNlvP9lvdftN3SdIaE8v9RYA5Ray5cNssf0wMDAwMDAwMDAwMDAwMDAwl2dbq2fqT/JjRoYcDAwMDAwMDAwMDAwMDAwMzJKYbTbM6amm+pimmrBnns+hdTF7klQYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGJj9+H4zf8+EdDHhdJASXohOlq2WkEHMtKnxSJaVMAUGBgYGJg+mLfXQDDkUEDMIQobKmd4H6gy90flDD63RnOz/p9seGBgYGBgYmLdiOuXDVemVV0O7NHq/6Kr0Ct8hTK/kvijlpf0zMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDCnMN33iTNgOhlaPBfTJkivbSPLGtNkZMFplhQYGBgYmDyYtR6aK5UzSxWavs/AwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwKx87MRSB4I4dwYGBgYGBuZjMEsd17rUQbptrqE1MuTcCwADAwMDcw1mrYfmoR5Lfs1R/Ej6C6hiX6a/GiyOy/SXtsHAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAvAMTFnjNAQsvjF/acjLF+83tXftnZhtaMDAwMDAwMCtjevVYSszIGsdEPQMDAwMD8wGYyyY0Xnpo/llyf/lU0/P9CNv5O5tmngQ8fWfTzJh2cp9mFkyBgYGBgcmDSf/Q3B8/7xnLmUP7o7JXz7UJ0is0D8fT3R9pne8Ptd0vz1DbYGBgYGBgYP6F6WQKzEDbvgUYAOHBL0u5xFRyAAAAAElFTkSuQmCC";
+    car_img.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAAE4CAMAAAAgiOx7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhQTFRF1NJrtLI1//oAr6wn29lxbGoczMkz////mbfregAAAAh0Uk5T/////////wDeg71ZAAAB30lEQVR42uzdQW6EMAwF0KQNcP8bd4nbKlIolYjD+3tGfmIWZiY25TjTPhKmBUCBgYGBgYGBeSOmhaTEhJQasoXsE2QbSKy/1M8zGTGhfBgYGBgYGBgYGBgYGBgYGBgYmIHUlTA7DAwMDAwMDAwMDAwMDAwMDEwqzJ4jdSXMDgMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDM4wJ20HKNnFKSBfTsmBCoTAwMDAwMDB3MbFNSN/O9C6YDXD5JOBsTWevHhgYGBgYGJh/xazUzvQ+6KncmtLotdwPBQYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYG5m+Y3v+JbYL0ahs51pgmMDAwMDAwMHcxS7UzumYYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYmPdgsq+dsN/M3hkYGBgYGJjsmOztzFKLdNtkX62RRxIYGBgYGJgnMHWpO7PsewHSv4AKBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgbmJ6bOa6mXMbPdpV5tMDAwMDAwMDA5MDU9ZuQgHQwMDAwMDAzMqpg4MDDzL5ojgw1x5KTNjGkXh4FgYGBgYGBgfmFCMrYz3+qPyl4z1ybISG3lONO/4Hg8Q7XBwMDAwMDAvBHzJcAATKWvLhrDniYAAAAASUVORK5CYII=";
+}
+function checking(){
 
-        
+}
+function restart(){
+    if(Date.parse(new Date())-buttonLustTapTime>800) {
+        tangetX = 0;
+        tangetT = 0;
+        player_x = 30;
+        player_y = canvas_h - player_h - 20;
+        win = false;
 
-
-        car_img.onload=loadedOne;
-        
-        player_img.onload=function(){
-            res_count++;
-            c.clearRect(0, 0,canvas_w,canvas_h);
-            c.drawImage(this,0,0,player_w,player_h);
-            player_data = c.getImageData(0,0,player_w,player_h).data;
-            c.clearRect(0, 0,canvas_w,canvas_h);
-        }
-
-        player_img.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAAE4CAMAAAAgiOx7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhQTFRF1GtrcyEhrycn23FxbBwc/wAAzDMz////NSfHDgAAAAh0Uk5T/////////wDeg71ZAAACbUlEQVR42uzdy27DIBAFUAiu8/9/3FWbcRUk3EQyQ85ddZOKU6g8wTzK/ZH2lTAtAAoMDAwMDAzMJ2JaSEpMSNlvP9lvdftN3SdIaE8v9RYA5Ray5cNssf0wMDAwMDAwMDAwMDAwMDAwl2dbq2fqT/JjRoYcDAwMDAwMDAwMDAwMDAwMzJKYbTbM6amm+pimmrBnns+hdTF7klQYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGJj9+H4zf8+EdDHhdJASXohOlq2WkEHMtKnxSJaVMAUGBgYGJg+mLfXQDDkUEDMIQobKmd4H6gy90flDD63RnOz/p9seGBgYGBgYmLdiOuXDVemVV0O7NHq/6Kr0Ct8hTK/kvijlpf0zMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDCnMN33iTNgOhlaPBfTJkivbSPLGtNkZMFplhQYGBgYmDyYtR6aK5UzSxWavs/AwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwKx87MRSB4I4dwYGBgYGBuZjMEsd17rUQbptrqE1MuTcCwADAwMDcw1mrYfmoR5Lfs1R/Ej6C6hiX6a/GiyOy/SXtsHAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAvAMTFnjNAQsvjF/acjLF+83tXftnZhtaMDAwMDAwMCtjevVYSszIGsdEPQMDAwMD8wGYyyY0Xnpo/llyf/lU0/P9CNv5O5tmngQ8fWfTzJh2cp9mFkyBgYGBgcmDSf/Q3B8/7xnLmUP7o7JXz7UJ0is0D8fT3R9pne8Ptd0vz1DbYGBgYGBgYP6F6WQKzEDbvgUYAOHBL0u5xFRyAAAAAElFTkSuQmCC";
-        car_img.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAAE4CAMAAAAgiOx7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhQTFRF1NJrtLI1//oAr6wn29lxbGoczMkz////mbfregAAAAh0Uk5T/////////wDeg71ZAAAB30lEQVR42uzdQW6EMAwF0KQNcP8bd4nbKlIolYjD+3tGfmIWZiY25TjTPhKmBUCBgYGBgYGBeSOmhaTEhJQasoXsE2QbSKy/1M8zGTGhfBgYGBgYGBgYGBgYGBgYGBgYmIHUlTA7DAwMDAwMDAwMDAwMDAwMDEwqzJ4jdSXMDgMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDM4wJ20HKNnFKSBfTsmBCoTAwMDAwMDB3MbFNSN/O9C6YDXD5JOBsTWevHhgYGBgYGJh/xazUzvQ+6KncmtLotdwPBQYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYG5m+Y3v+JbYL0ahs51pgmMDAwMDAwMHcxS7UzumYYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYmPdgsq+dsN/M3hkYGBgYGJjsmOztzFKLdNtkX62RRxIYGBgYGJgnMHWpO7PsewHSv4AKBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgbmJ6bOa6mXMbPdpV5tMDAwMDAwMDA5MDU9ZuQgHQwMDAwMDAzMqpg4MDDzL5ojgw1x5KTNjGkXh4FgYGBgYGBgfmFCMrYz3+qPyl4z1ybISG3lONO/4Hg8Q7XBwMDAwMDAvBHzJcAATKWvLhrDniYAAAAASUVORK5CYII=";
-    }
-    function checking(){
-
-    }
-    function restart(){
-
-
-        tangetX=0;
-        tangetT=0;
-        player_x=30;
-        player_y=canvas_h-player_h-20;
-        win=false;
-        
-        player_setp=30;
-        player_time=0;
-        fps=1000/32;
-        loopTime=0;
-        player_to="right";
-        makeCarTime=0;
-        backgroundY=0;
+        player_setp = 30;
+        player_time = 0;
+        fps = 1000 / 32;
+        loopTime = 0;
+        player_to = "right";
+        makeCarTime = 0;
+        backgroundY = 0;
         //
         //document.getElementById("myCanvas").style.display="block";
-        document.getElementById("welcome").style.display="none";
-        document.getElementById("loading").style.display="none";
-        document.getElementById("gameover").style.display="none";
+        document.getElementById("welcome").style.display = "none";
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("gameover").style.display = "none";
         //
-        time=0;
-        cars=new Array();
-        carNext=0;
-        loop=true;
+        time = 0;
+        cars = new Array();
+        carNext = 0;
+        loop = true;
     }
+}
 
-    function looping(){
+function looping(){
 
-        if(loop){
-            //
-            backgroundY+=10;
-            
-            document.getElementById("myCanvas").style.backgroundPositionY=backgroundY+"px";
-            
-            loopTime+=fps;
-                c.clearRect(0, 0,canvas_w,canvas_h);
-                for(i in cars){
-                    
-                    c.drawImage(car_img,cars[i][0],cars[i][1], player_w, player_h);
+    if(loop){
+        //
+        backgroundY+=10;
 
-                }
-                player();
-                var data = c.getImageData(player_x,player_y,player_w,player_h).data;
-                var step=0;
-                for (var ii = 3; ii < data.length; ii += 4) {
-                    if(loop){
-                        step++;
-                        if(step==1){
-                            if (data[ii]>0 && player_data[ii] > 0) {
-                                    ii=data.length;
-                                    gameover();
-                                if(data[ii-3]==255 && data[ii-2]==153 && data[ii-1]==0){
-                                    
-                                }
-                                else if(data[ii-3]==255 && data[ii-2]==0 && data[ii-1]==0){
-                                    ii=data.length;
-                                    gameover();
-                                }
-                                else if(data[ii-3]==0 && data[ii-2]==153 && data[ii-1]==255){
-                                    win=true;
-                                    ii=data.length;
-                                    gameover();
-                                }
-                                
-                                break;
-                            }
-                            step=0;
+        document.getElementById("myCanvas").style.backgroundPositionY=backgroundY+"px";
+
+        loopTime+=fps;
+        c.clearRect(0, 0,canvas_w,canvas_h);
+        for(i in cars){
+
+            c.drawImage(car_img,cars[i][0],cars[i][1], player_w, player_h);
+
+        }
+        player();
+        var data = c.getImageData(player_x,player_y,player_w,player_h).data;
+        var step=0;
+        for (var ii = 3; ii < data.length; ii += 4) {
+            if(loop){
+                step++;
+                if(step==1){
+                    if (data[ii]>0 && player_data[ii] > 0) {
+                        ii=data.length;
+                        gameover();
+                        if(data[ii-3]==255 && data[ii-2]==153 && data[ii-1]==0){
+
                         }
+                        else if(data[ii-3]==255 && data[ii-2]==0 && data[ii-1]==0){
+                            ii=data.length;
+                            gameover();
+                        }
+                        else if(data[ii-3]==0 && data[ii-2]==153 && data[ii-1]==255){
+                            win=true;
+                            ii=data.length;
+                            gameover();
+                        }
+
+                        break;
                     }
-                }        
-
-
-            //
-            c.clearRect(0, 0,canvas_w,canvas_h);
-            //c.drawImage(bg_img,0,0,canvas_w,canvas_h);
-            makeCarTime+=fps;
-            
-            if(makeCarTime>=1000){
-                //cars.push([canvas_w-player_w-60],-1*player_h]);
-                if(carNext==0){
-                    carNext=1;
-                    cars.push([60,-1*player_h]);
-                }else{
-                    carNext=0;
-                    cars.push([canvas_w-player_w-60,-1*player_h]);
-                }
-                
-                
-                makeCarTime=0;
-            }
-            
-            for(i in cars){
-                cars[i][1]+=60;
-                c.drawImage(car_img,cars[i][0],cars[i][1], player_w, player_h);
-                if(cars[i][1]>canvas_h+player_h+100){
-                    cars.splice(i,1);
+                    step=0;
                 }
             }
-            
-            
-            c.drawImage(player_img, player_x, player_y, player_w, player_h);
-            time+=fps;
-            
-            if(time==1000){
-                time=0;
-                player_time++;
-            }
-            c.font="50px Georgia";
-            c.fillStyle="#f00";
-            c.fillText(player_time,canvas_w/2-15,60);
-
-            //
-
-            //
         }
-        //checking res loaded?
-        if(resloaded==false){
-            if(res_count==2){
-                welcome();
-                resloaded=true;
+
+
+        //
+        c.clearRect(0, 0,canvas_w,canvas_h);
+        //c.drawImage(bg_img,0,0,canvas_w,canvas_h);
+        makeCarTime+=fps;
+
+        if(makeCarTime>=1000){
+            //cars.push([canvas_w-player_w-60],-1*player_h]);
+            if(carNext==0){
+                carNext=1;
+                cars.push([60,-1*player_h]);
+            }else{
+                carNext=0;
+                cars.push([canvas_w-player_w-60,-1*player_h]);
             }
+
+
+            makeCarTime=0;
+        }
+
+        for(i in cars){
+            cars[i][1]+=60;
+            c.drawImage(car_img,cars[i][0],cars[i][1], player_w, player_h);
+            if(cars[i][1]>canvas_h+player_h+100){
+                cars.splice(i,1);
+            }
+        }
+
+
+        c.drawImage(player_img, player_x, player_y, player_w, player_h);
+        time+=fps;
+
+        if(time==1000){
+            time=0;
+            player_time++;
+        }
+        c.font="50px Georgia";
+        c.fillStyle="#f00";
+        c.fillText(player_time,canvas_w/2-15,60);
+
+        //
+
+        //
+    }
+    //checking res loaded?
+    if(resloaded==false){
+        if(res_count==2){
+            welcome();
+            resloaded=true;
         }
     }
-    function player(){
-        if(player_to=="right"){
-            player_x+=player_setp;
-            if(player_x>=canvas_w-player_w-60){
-                //player_to="left";
-                player_x=canvas_w-player_w-60;
-            }
+}
+function player(){
+    if(player_to=="right"){
+        player_x+=player_setp;
+        if(player_x>=canvas_w-player_w-60){
+            //player_to="left";
+            player_x=canvas_w-player_w-60;
         }
-        if(player_to=="left"){
-            player_x-=player_setp;
-            if(player_x<=60){
-                //player_to="right";
-                player_x=60;
-                player_to="right";
-            }
-        }
-
     }
-    window.addEventListener('load',init,false);
+    if(player_to=="left"){
+        player_x-=player_setp;
+        if(player_x<=60){
+            //player_to="right";
+            player_x=60;
+            player_to="right";
+        }
+    }
 
+}
+window.addEventListener('load',init,false);
+function initbuttons(){
+    document.querySelector("#start").addEventListener('touchstart',restart);
+    document.querySelector("#start").addEventListener('click',restart);
+    document.querySelector("#restart").addEventListener('touchstart',restart);
+    document.querySelector("#restart").addEventListener('click',restart);
+    document.querySelector("#link").addEventListener('touchstart',link);
+    document.querySelector("#link").addEventListener('click',link);
+}
 </script>
 </head>
 <body>
