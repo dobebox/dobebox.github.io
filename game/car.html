@@ -392,6 +392,7 @@ function looping(){
         if(time==1000){
             time=0;
             player_time++;
+            car_speed++;
         }
         c.font="50px Georgia";
         c.fillStyle="#f00";
@@ -410,7 +411,7 @@ function looping(){
     }
 }
 function player(){
-    player_setp=10;
+    player_setp=car_speed;
     if(player_to=="right"){
         player_x+=player_setp;
         if(player_x>=canvas_w-player_w-120){
