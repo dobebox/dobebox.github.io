@@ -171,7 +171,7 @@ function init(){
             var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
             startx = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
             player_to = "left";
-            player_target_X = player_x-30;
+            player_target_X = player_x-car_speed*2;
             if(player_target_X<120){
                 player_target_X=120;
             }
@@ -182,7 +182,7 @@ function init(){
     canvas.addEventListener('click', function (e) {
         if (loop) {
             player_to = "left";
-            player_target_X = player_x-30;
+            player_target_X = player_x-car_speed*2;
             if(player_target_X<120){
                 player_target_X=120;
             }
