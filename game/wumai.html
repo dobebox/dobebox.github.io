@@ -371,22 +371,28 @@ function looping(){
             var tmp_y=0;
 
 
-            //top
-            tmp_x=Math.floor(Math.random() * 640);
-            tmp_y=-1*tmp_w;
-            objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
-            //left
-            tmp_x=-1*tmp_w;
-            tmp_y=Math.floor(Math.random() * 960);
-            objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
-            //right
-            tmp_x=canvas_w+tmp_w;
-            tmp_y=Math.floor(Math.random() * 960);
-            objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
-            //bottom
-            tmp_x=Math.floor(Math.random() * 640);
-            tmp_y=tmp_w+canvas_h;
-            objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
+            function makeObj(){
+                //top
+                tmp_x=Math.floor(Math.random() * 640);
+                tmp_y=-1*tmp_w;
+                objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
+                //left
+                tmp_x=-1*tmp_w;
+                tmp_y=Math.floor(Math.random() * 960);
+                objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
+                //right
+                tmp_x=canvas_w+tmp_w;
+                tmp_y=Math.floor(Math.random() * 960);
+                objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
+                //bottom
+                tmp_x=Math.floor(Math.random() * 640);
+                tmp_y=tmp_w+canvas_h;
+                objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
+            }
+            makeObj();
+            makeObj();
+            makeObj();
+            makeObj();
 
             makeObjTime=0;
         }
@@ -399,14 +405,24 @@ function looping(){
         }
         c.font="50px Georgia";
         c.fillStyle="#f00";
-        c.fillText(player_time,canvas_w/2-15,60);
+        c.fillText(player_time,560,60);
 
 
         //
-        c.fillText(player_blood,10,60);
+
         if(player_blood<=0){
             gameover();
+            player_blood=0;
         }
+        c.fillStyle="#f00";
+        c.fillRect(10,50,300,30);
+        c.fillStyle="#fff";
+        c.fillRect(12,52,296,26);
+        c.fillStyle="#f00";
+        c.fillRect(12,52,300*player_blood*0.01,26);
+        c.font="30px Georgia";
+        c.fillStyle="#f00";
+        c.fillText(+player_blood+"%",10,32);
         //
     }
     //checking res loaded?
