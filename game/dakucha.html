@@ -184,54 +184,17 @@
         }
         var tmp=Math.floor(Math.random() * blocks);
         var es=document.getElementsByClassName("pic");
-        r-=n;
-        g-=n;
-        b-=n;
-        es[tmp].setAttribute("class","picSel");
-        select=es[tmp];
-        es[tmp].addEventListener("touchend",init);
 
+        select=es[tmp];
+        es[tmp].addEventListener("touchstart",init);
+        es[tmp].addEventListener("click",init);
+        es[tmp].setAttribute("class","picSel");
+        console.log(tmp);
     }
 
     window.onload = function() {
         init();
-        document.getElementById("canvas").addEventListener('touchstart', function (e) {
-            var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
-            startx = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
-            starty = parseInt(touchobj.clientY) // get x position of touch point relative to left edge of browser
-            //statusdiv.innerHTML = 'Status: touchstart<br /> ClientX: ' + startx + 'px'
-            e.preventDefault()
-        }, false);
 
-        document.getElementById("canvas").addEventListener('touchmove', function (e) {
-            var touchobj = e.changedTouches[0] // reference first touch point for this event
-
-            //gameCtrl.player.x+=distX;
-            //gameCtrl.player.y+=distY;
-            //statusdiv.innerHTML = 'Status: touchmove<br /> Horizontal distance traveled: ' + dist + 'px'
-            e.preventDefault()
-        }, false);
-
-        document.getElementById("canvas").addEventListener('touchend', function (e) {
-            var touchobj = e.changedTouches[0] // reference first touch point for this event
-            //statusdiv.innerHTML = 'Status: touchend<br /> Resting x coordinate: ' + touchobj.clientX + 'px'
-            var distX = parseInt(touchobj.clientX) - startx;
-            var distY = parseInt(touchobj.clientY) - starty;
-            var tmp=0;
-            if (distX > document.body.scrollWidth/3) {
-                //right
-            }
-            if (distX < -document.body.scrollWidth/3) {
-                //left
-            }
-            if (distY > document.body.scrollWidth/3) {
-                //down
-            }
-            if (distY < -document.body.scrollWidth/3) {
-                //up
-            }
-            e.preventDefault()
-        }, false);
         //
 
         setInterval(function(){
