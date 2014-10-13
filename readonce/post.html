@@ -124,13 +124,14 @@
             
         });    
         document.getElementById("submit").addEventListener("click",post,false);
+        document.getElementById("rewrite").addEventListener("touchstart",rewrite,false);
     }
     window.addEventListener("load",init,false);
-    function re(){
+    function rewrite(){
         document.getElementById("msg").style.display="none";
         document.getElementById("text").value="";
     }
-    document.getElementById("rewrite").addEventListener("touchstart",re,false);
+    
 </script>
 </head>
 <body>
