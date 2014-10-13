@@ -14,27 +14,58 @@
         margin:0px;
         padding: 0px;
     }
+    h2{
+        text-align: center;
+        position: fixed;
+        width: 90%;
+        top: 5px;
+        left: 5%;
+        right: 5%;
+        height: 50px;
+        line-height: 50px;
+        
+    }
     #msg{
         display: none;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        width: 100%;
+        height: auto;
+        background: rgba(229,18,157,1);
+        color: #fff;
+        z-index: 999;
+        text-align: center;
     }
     #text{
         position: fixed;
         width: 90%;
-        top: 10px;
+        top: 60px;
         left: 5%;
         right: 5%;
         height: auto;
-        bottom: 15px;
+        bottom: 45px;
     }
     #submit{
        position: fixed;
         width: 90%;
-        top: 10px;
         left: 5%;
         right: 5%;
         text-align: center;
-        height: 10px;
-        bottom: 0px; 
+        height: 30px;
+        line-height: 30px;
+        bottom: 10px; 
+    }
+    p{
+        margin: 10px 0px 0px 0px;
+    }
+    #rewrite{
+        color: rgba(229,18,157,1);
+        background: rgba(266,255,255,1);
+        margin: 20px 0px 0px 0px;
+        padding: 10px;
     }
 </style>
 <script>
@@ -92,11 +123,22 @@
         document.getElementById("submit").addEventListener("click",post,false);
     }
     window.addEventListener("load",init,false);
+    function re(){
+        document.getElementById("msg").style.display="none";
+        document.getElementById("text").value="";
+    }
+    document.getElementById("rewrite").addEventListener("touchstart",re,false);
 </script>
 </head>
 <body>
-    <div id="msg">右上角分享给微信好友吧！你的好友看了以后这条消息就会被永久删除。</div>
-    <textarea id="text" name="text"></textarea>
+   <h2>写消息</h2>
+    <div id="msg">
+        <p>右上角分享给微信好友吧！</p>
+        <p>你的好友看了以后这条消息就会被永久删除。</p>
+        <div id="rewrite">再写一条</div>
+    </div>
+    <textarea id="text" name="text" placeholder="你写的内容会在对方看到后自动删除，而且是永久的删除，并且无法恢复。"></textarea>
     <input id="submit" type="submit" value="提交">
+    <div style="display:none;"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/17388448.asp" style="border:none" /></div>
 </body>
 </html>
