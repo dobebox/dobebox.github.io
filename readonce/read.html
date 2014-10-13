@@ -13,6 +13,26 @@
         margin:0px;
         padding: 0px;
     }
+    #iframe{
+        border: none;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 50px;
+        width: 100%;
+        height: auto;
+    }
+    #cp{
+        position: fixed;
+        text-align: center;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        width: 100%;
+        height:50px;
+        line-height: 50px;
+    }
 </style>
 <script>
 function init(){
@@ -25,5 +45,6 @@ window.addEventListener('load',init,false);
 </head>
 <body>
     <iframe id="iframe" src="" width="100%" scrolling="no"></iframe>
+    <div id="cp"><a href="http://www.dobebox.com/readonce/post.html">我有也要写一封</a></div>
 </body>
 </html>
