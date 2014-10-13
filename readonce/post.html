@@ -17,6 +17,25 @@
     #msg{
         display: none;
     }
+    #text{
+        position: fixed;
+        width: 90%;
+        top: 10px;
+        left: 5%;
+        right: 5%;
+        height: auto;
+        bottom: 15px;
+    }
+    #submit{
+       position: fixed;
+        width: 90%;
+        top: 10px;
+        left: 5%;
+        right: 5%;
+        text-align: center;
+        height: 10px;
+        bottom: 0px; 
+    }
 </style>
 <script>
     function post(){
@@ -26,6 +45,7 @@
         s.charset="utf-8";
         s.type="text/javascript";
         s.src="http://dobebox.jd-app.com/postapi.php?text="+text;b.appendChild(s);
+        
     }
 
     function init(){
@@ -69,7 +89,7 @@
             });
             
         });    
-            document.getElementById("submit").addEventListener("click",post,false);
+        document.getElementById("submit").addEventListener("click",post,false);
     }
     window.addEventListener("load",init,false);
 </script>
