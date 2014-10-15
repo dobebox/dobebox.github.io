@@ -432,6 +432,7 @@ function tap(trueX,trueY){
         if(trueX>objs[i][0]&&trueX<objs[i][0]+270){
             if(trueY>objs[i][1]&&trueY<objs[i][1]+151){
                 getObj++;
+                speed+=0.2;
                 objs.splice(i,1);
             }
         }
