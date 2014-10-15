@@ -297,7 +297,7 @@ function loadingRES(){
     
     spiderCal=new Audio();
     spiderCal.src="touch.mp3";
-    spiderCal.onload=loadedOne;
+    
     /*
      player_img.onload=function(){
      res_count++;
@@ -313,7 +313,7 @@ function restart(){
     if(Date.parse(new Date())-buttonLustTapTime>800) {
         tangetX = 320;
         tangetY = 480;
-
+        spiderCal.load();
         win = false;
         player_blood=100;
         speed=5;
