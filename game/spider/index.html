@@ -328,7 +328,6 @@ function looping(){
         c.drawImage(bg_img,0,0,canvas_w,canvas_h);
 
         for(i in objs){
-            objs[i][0]+=speed;
             var obj_x=objs[i][0]+objs[i][2]/2;
             var obj_y=objs[i][1]+objs[i][3]/2;
             objs[i][0]-=speed;
