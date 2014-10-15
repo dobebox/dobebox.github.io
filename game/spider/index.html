@@ -391,7 +391,7 @@ function looping(){
             //var tmp_w=Math.floor(Math.random() * 300)+150;
             objs.push([640,745,0,100]);
         }
-        if(makeObjTime==30){
+        if(makeObjTime>100/speed){
             makeObjTime=0;
         }
 
@@ -438,7 +438,7 @@ function tap(trueX,trueY){
                 
                 spiderCal.play();
                 getObj++;
-                speed+=0.2;
+                speed+=0.5;
                 objs.splice(i,1);
             }
         }
