@@ -435,11 +435,12 @@ function tap(trueX,trueY){
     for(i in objs){
         if(trueX>objs[i][0]&&trueX<objs[i][0]+270){
             if(trueY>objs[i][1]&&trueY<objs[i][1]+151){
-                spiderCal.stop();
-                spiderCal.play();
+                
                 getObj++;
                 speed+=0.5;
                 objs.splice(i,1);
+                spiderCal.stop();
+                spiderCal.play();
             }
         }
     }
