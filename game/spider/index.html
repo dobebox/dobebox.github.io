@@ -294,6 +294,10 @@ function loadingRES(){
     obj_img_4.src="spider_4.png";
     obj_img_5.src="spider_5.png";
     obj_img_6.src="spider_6.png";
+    
+    spiderCal=new Audio();
+    spiderCal.src="touch.mp3";
+    spiderCal.onload=loadedOne;
     /*
      player_img.onload=function(){
      res_count++;
@@ -421,7 +425,7 @@ function looping(){
     }
     //checking res loaded?
     if(resloaded==false){
-        if(res_count==7){
+        if(res_count==8){
             welcome();
             resloaded=true;
         }
@@ -431,6 +435,8 @@ function tap(trueX,trueY){
     for(i in objs){
         if(trueX>objs[i][0]&&trueX<objs[i][0]+270){
             if(trueY>objs[i][1]&&trueY<objs[i][1]+151){
+                
+                spiderCal.play();
                 getObj++;
                 speed+=0.2;
                 objs.splice(i,1);
