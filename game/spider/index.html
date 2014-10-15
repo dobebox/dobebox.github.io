@@ -20,9 +20,8 @@
         top: 0px;
         left: 0px;
         right: 0px;
-        bottom: 0px;
+        bottom: 30px;
         z-index: 0;
-        background: #00CCFF;
     }
     #welcome,#gameover,#loading{
         width:100%;
@@ -231,7 +230,7 @@ function init(){
         imgUrl+=icon;
         shareLink=document.location.href;
         shareTitle=document.title;
-        shareIcon="http://mmbiz.qpic.cn/mmbiz/ZBB7rRgWr0siaDJVr6ndVicGGQjKfGrib3CGaCpJYMTtqS926TY20ucNUSsQdnN3RaZz235ib7U7JuPicLbK7SO9jKg/640";
+        shareIcon="http://www.dobebox.com/game/spider/spider_1.png";
         // 发送给好友
         WeixinJSBridge.on('menu:share:appmessage', function (argv) {
             WeixinJSBridge.invoke('sendAppMessage', {
@@ -272,14 +271,29 @@ function loadingRES(){
 
 
     bg_img=new Image();
-    obj_img=new Image();
+    obj_img_1=new Image();
+    obj_img_2=new Image();
+    obj_img_3=new Image();
+    obj_img_4=new Image();
+    obj_img_5=new Image();
+    obj_img_6=new Image();
 
 
     bg_img.onload=loadedOne;
-    obj_img.onload=loadedOne;
+    obj_img_1.onload=loadedOne;
+    obj_img_2.onload=loadedOne;
+    obj_img_3.onload=loadedOne;
+    obj_img_4.onload=loadedOne;
+    obj_img_5.onload=loadedOne;
+    obj_img_6.onload=loadedOne;
 
     bg_img.src="bg.png";
-    obj_img.src="spider_1.png";
+    obj_img_1.src="spider_1.png";
+    obj_img_2.src="spider_2.png";
+    obj_img_3.src="spider_3.png";
+    obj_img_4.src="spider_4.png";
+    obj_img_5.src="spider_5.png";
+    obj_img_6.src="spider_6.png";
     /*
      player_img.onload=function(){
      res_count++;
@@ -331,11 +345,35 @@ function looping(){
             var obj_x=objs[i][0]+objs[i][2]/2;
             var obj_y=objs[i][1]+objs[i][3]/2;
             objs[i][0]-=speed;
-            if(obj_x<-270){
+            if(objs[i][0]<0){
+                    player_blood-=0.5;
+                    
+            }
+            if(objs[i][0]<-270){
                     player_blood--;
                     objs.splice(i,1);
             }
-            c.drawImage(obj_img,objs[i][0],objs[i][1]);
+            objs[i][2]+=5;
+            if(objs[i][2]>0 && objs[i][2]<11){
+                c.drawImage(obj_img_1,objs[i][0],objs[i][1]);
+            }
+            if(objs[i][2]>10 && objs[i][2]<21){
+                c.drawImage(obj_img_2,objs[i][0],objs[i][1]);
+            }
+            if(objs[i][2]>20 && objs[i][2]<31){
+                c.drawImage(obj_img_3,objs[i][0],objs[i][1]);
+            }
+            if(objs[i][2]>30 && objs[i][2]<41){
+                c.drawImage(obj_img_4,objs[i][0],objs[i][1]);
+            }
+            if(objs[i][2]>40 && objs[i][2]<51){
+                c.drawImage(obj_img_5,objs[i][0],objs[i][1]);
+            }
+            if(objs[i][2]>50 && objs[i][2]<61){
+                c.drawImage(obj_img_6,objs[i][0],objs[i][1]);
+                objs[i][2]=0;
+            }
+            
         }
 
 
@@ -347,9 +385,9 @@ function looping(){
         makeObjTime++;
         if(makeObjTime==1){
             //var tmp_w=Math.floor(Math.random() * 300)+150;
-            objs.push([640,875-151,100]);
+            objs.push([640,745,0,100]);
         }
-        if(makeObjTime==10){
+        if(makeObjTime==30){
             makeObjTime=0;
         }
 
@@ -361,29 +399,29 @@ function looping(){
         }
         c.font="50px Georgia";
         c.fillStyle="#f00";
-        c.fillText(player_time,560,60);
+        c.fillText(getObj,560,60);
 
 
         //
-
+        player_blood=parseInt(player_blood);
         if(player_blood<=0){
             gameover();
             player_blood=0;
         }
         c.fillStyle="#f00";
-        c.fillRect(10,50,300,30);
+        c.fillRect(20,20,300,30);
         c.fillStyle="#fff";
-        c.fillRect(12,52,296,26);
+        c.fillRect(22,22,296,26);
         c.fillStyle="#f00";
-        c.fillRect(12,52,300*player_blood*0.01,26);
+        c.fillRect(22,22,300*player_blood*0.01,26);
         c.font="30px Georgia";
         c.fillStyle="#f00";
-        c.fillText(+player_blood+"%",10,32);
+        c.fillText(+player_blood+"%",340,45);
         //
     }
     //checking res loaded?
     if(resloaded==false){
-        if(res_count==2){
+        if(res_count==7){
             welcome();
             resloaded=true;
         }
@@ -391,8 +429,8 @@ function looping(){
 }
 function tap(trueX,trueY){
     for(i in objs){
-        if(trueX>objs[i][0]&&trueX<objs[i][0]+objs[i][2]){
-            if(trueY>objs[i][1]&&trueY<objs[i][1]+objs[i][3]){
+        if(trueX>objs[i][0]&&trueX<objs[i][0]+270){
+            if(trueY>objs[i][1]&&trueY<objs[i][1]+151){
                 getObj++;
                 objs.splice(i,1);
             }
@@ -423,9 +461,8 @@ function initbuttons(){
 </div>
 <canvas id="myCanvas"></canvas>
 <div id="copy">逗比盒子</div>
-<span id="tongji" style="display: none;"><script type="text/javascript">
-    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc961dabb84f92a11e4c69829d2968259' type='text/javascript'%3E%3C/script%3E"));
-</script><script src=" http://hm.baidu.com/h.js?c961dabb84f92a11e4c69829d2968259" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=c961dabb84f92a11e4c69829d2968259" target="_blank"><img border="0" src="http://eiv.baidu.com/hmt/icon/21.gif" width="20" height="20"></a></span>
+<span id="tongji" style="display: none;">
+    <img src="http://img.users.51.la/17388441.asp">
+</span>
 </body>
 </html>
