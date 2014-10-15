@@ -296,6 +296,7 @@ function loadingRES(){
     obj_img_6.src="spider_6.png";
     
     spiderCal=new Audio();
+    spiderCal.onload=loadedOne;
     spiderCal.src="touch.mp3";
     
     /*
@@ -425,7 +426,7 @@ function looping(){
     }
     //checking res loaded?
     if(resloaded==false){
-        if(res_count==7){
+        if(res_count==8){
             welcome();
             resloaded=true;
         }
@@ -437,9 +438,9 @@ function tap(trueX,trueY){
             if(trueY>objs[i][1]&&trueY<objs[i][1]+151){
                 
                 getObj++;
-                speed+=0.5;
+                speed+=1;
                 objs.splice(i,1);
-                //spiderCal.play();
+                spiderCal.play();
                 break;
                 
                 
