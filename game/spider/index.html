@@ -313,7 +313,7 @@ function restart(){
         //
         time = 0;
         objs=new Array();
-        //objs.push([0,150,100,100]);
+        
         loop = true;
     }
 }
@@ -328,30 +328,15 @@ function looping(){
         c.drawImage(bg_img,0,0,canvas_w,canvas_h);
 
         for(i in objs){
-
-
-            if(objs[i][0]+objs[i][2]/2<tangetX){
-                objs[i][0]+=speed;
-            }
-            if(objs[i][1]+objs[i][3]/2<tangetY){
-                objs[i][1]+=speed;
-            }
-            if(objs[i][0]+objs[i][2]/2>tangetX){
-                objs[i][0]-=speed;
-            }
-            if(objs[i][1]+objs[i][3]/2>tangetY){
-                objs[i][1]-=speed;
-            }
-
+            objs[i][0]+=speed;
             var obj_x=objs[i][0]+objs[i][2]/2;
             var obj_y=objs[i][1]+objs[i][3]/2;
-            if(obj_x>tangetX-10 && obj_x<tangetX+10){
-                if(obj_y>tangetY-10 && obj_y<tangetY+10){
+            objs[i][0]-=speed;
+            if(obj_x<-270){
                     player_blood--;
-                }
+                    objs.splice(i,1);
             }
-
-            c.drawImage(obj_img,objs[i][0],objs[i][1],objs[i][2],objs[i][3]);
+            c.drawImage(obj_img,objs[i][0],objs[i][1]);
         }
 
 
@@ -361,38 +346,11 @@ function looping(){
         //c.clearRect(0, 0,canvas_w,canvas_h);
         //c.drawImage(bg_img,0,0,canvas_w,canvas_h);
         makeObjTime++;
-        if(makeObjTime>10){
-
-
-            var tmp_w=Math.floor(Math.random() * 300)+150;
-            //var tmp_h=Math.floor(Math.random() * 300)+150;
-            var tmp_x=0;
-            var tmp_y=0;
-
-
-            function makeObj(){
-                //top
-                tmp_x=Math.floor(Math.random() * 640);
-                tmp_y=-1*tmp_w;
-                objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
-                //left
-                tmp_x=-1*tmp_w;
-                tmp_y=Math.floor(Math.random() * 960);
-                objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
-                //right
-                tmp_x=canvas_w+tmp_w;
-                tmp_y=Math.floor(Math.random() * 960);
-                objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
-                //bottom
-                tmp_x=Math.floor(Math.random() * 640);
-                tmp_y=tmp_w+canvas_h;
-                objs.push([tmp_x,tmp_y,tmp_w,tmp_w]);
-            }
-            makeObj();
-            makeObj();
-            makeObj();
-            makeObj();
-
+        if(makeObjTime==1){
+            //var tmp_w=Math.floor(Math.random() * 300)+150;
+            objs.push([640,875-151,100]);
+        }
+        if(makeObjTime==10){
             makeObjTime=0;
         }
 
