@@ -72,9 +72,12 @@
     }
 </style>
 <script>
+    text="";
+    function upText(){
+        text=document.getElementById("text").value;
+    }
     function post(){
-        var text=document.getElementById("text").value;
-        
+        upText();
         var t=new Date().getTime(),w=window,d=w.document,b=d.body,s=d.createElement("script");
         s.charset="utf-8";
         s.type="text/javascript";
@@ -125,6 +128,7 @@
         });    
         document.getElementById("submit").addEventListener("click",post,false);
         document.getElementById("rewrite").addEventListener("touchstart",rewrite,false);
+        document.getElementById("text").addEventListener("change",upText,false);
     }
     window.addEventListener("load",init,false);
     function rewrite(){
@@ -137,7 +141,7 @@
 <body>
    <h2>写消息</h2>
     <div id="msg">
-        <p>右上角分享给微信好友吧！</p>
+        <p><img src="../res/share.png"></p>
         <p>你的好友看了以后这条消息就会被永久删除。</p>
         <div id="rewrite">发给好友后，再写一条</div>
     </div>
