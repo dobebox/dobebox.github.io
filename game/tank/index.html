@@ -133,8 +133,8 @@
     function gameover(){
         document.getElementById("gameover").style.display="block";
         
-        shareTitle="我一共用"+alltime+"秒找到"+(next-1)+"个双管坦克";
-        document.getElementById("miao").innerHTML=alltime;
+        shareTitle="我一共用找到"+(next-1)+"个双管坦克";
+        
         document.getElementById("meizi").innerHTML=next-1;
         select.style.background="#f00";
     }
@@ -275,7 +275,7 @@
 <div id="gameover">
     <div class="msg">
         <p>右上角分享战果吧</p>
-        <p>用时：<span id="miao"></span>秒</p>
+        
         <p>找到：<span id="meizi"></span>个双管坦克</p>
     </div>
     <button onclick="restart()">重新开始。</button>
