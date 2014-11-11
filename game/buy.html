@@ -152,11 +152,26 @@
         position: fixed;
         top: 110%;
         width: 100%;
+        left: 0px;
+        right: 0px;
         height: 1000px;
         background: url(buy/hand.png);
         background-position: top center;
         background-size: 30%;
         background-repeat: no-repeat;
+    }
+    #knife{
+        position: fixed;
+        top: 110%;
+        width: 100%;
+        left: 0px;
+        right: 0px;
+        bottom: 20px;
+        background: url(buy/knife.png);
+        background-position: top center;
+        background-size: 40%;
+        background-repeat: no-repeat;
+        display: none;
     }
 </style>
 <script>
@@ -252,21 +267,29 @@ function restart(){
     playerTime=0;
     buytime=21;
     loop=true;
+    knifeshow=0;
 }
 window.addEventListener('load',init,false);
 function initbuttons(){
     document.querySelector("#start").addEventListener('click',restart);
     document.querySelector("#restart").addEventListener('click',restart);
     document.querySelector("#link").addEventListener('click',link);
-    document.querySelector("#hand").addEventListener('click',click);
+    document.querySelector("#hand").addEventListener('touchstart',click);
 }
 function looping(){
     if(loop){
+        knifeshow++;
         handtop-=speed;
         if(handtop<=32){
             gameover(0);
         }
         document.getElementById("hand").style.top=handtop+"%";
+        document.getElementById("knife").style.top=handtop+"%";
+        if(knifeshow>2){
+            knifeshow=0;
+            document.getElementById("knife").style.display="none";
+        }
+        
         if(buytime==0){
             gameover(1);
         }
@@ -282,6 +305,7 @@ function time(){
 }
 function click(){
     handtop+=5;
+    document.getElementById("knife").style.display="block";
 }
 </script>
 </head>
@@ -301,6 +325,7 @@ function click(){
     </div>
     <div id="buy_button">立刻购买</div>
     <div id="hand"></div>
+    <div id="knife"></div>
 </div>
 <div id="copy">逗比盒子</div>
 </body>
